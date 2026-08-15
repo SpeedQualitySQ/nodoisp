@@ -1,0 +1,20 @@
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.local
+
+# Supabase CLI local runtime state
+supabase/.branches
+supabase/.temp
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+
+# Unrelated files present in this directory before the project started
+/cloudflared-linux-amd64.deb
