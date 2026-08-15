@@ -11,6 +11,11 @@ const STYLES: Record<string, string> = {
   cut: 'bg-red-100 text-red-700',
   retired: 'bg-slate-200 text-slate-500',
   terminated: 'bg-slate-200 text-slate-500',
+  BORRADOR: 'bg-slate-100 text-slate-600',
+  PROCESANDO: 'bg-amber-100 text-amber-700',
+  AUTORIZADO: 'bg-teal-100 text-teal-700',
+  RECHAZADO: 'bg-red-100 text-red-700',
+  ANULADO: 'bg-slate-200 text-slate-500',
 }
 
 const LABELS: Record<string, string> = {
@@ -21,6 +26,11 @@ const LABELS: Record<string, string> = {
   cut: 'Cortado',
   retired: 'Retirado',
   terminated: 'Terminado',
+  BORRADOR: 'Borrador',
+  PROCESANDO: 'Procesando',
+  AUTORIZADO: 'Autorizado',
+  RECHAZADO: 'Rechazado',
+  ANULADO: 'Anulado',
 }
 
 const classes = computed(() => STYLES[props.status] ?? 'bg-slate-100 text-slate-600')

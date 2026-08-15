@@ -7,3 +7,14 @@
 body {
   @apply bg-slate-50 text-slate-900 antialiased;
 }
+
+/* Impresión de caja del día / reportes: solo la tabla, sin sidebar ni menús. */
+@media print {
+  aside,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    overflow: visible !important;
+  }
+}

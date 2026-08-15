@@ -45,6 +45,36 @@ const router = createRouter({
       name: 'installations',
       component: () => import('@/views/installations/InstallationsView.vue'),
     },
+    {
+      path: '/facturacion/manual',
+      name: 'invoicing-manual',
+      component: () => import('@/views/facturacion/ManualInvoicingView.vue'),
+    },
+    {
+      path: '/facturacion/recurrente',
+      name: 'invoicing-recurring',
+      component: () => import('@/views/facturacion/RecurringBillingView.vue'),
+    },
+    {
+      path: '/facturacion/cobros',
+      name: 'collections',
+      component: () => import('@/views/facturacion/CollectionsView.vue'),
+    },
+    {
+      path: '/facturacion/caja',
+      name: 'cash-register',
+      component: () => import('@/views/facturacion/CashRegisterView.vue'),
+    },
+    {
+      path: '/reportes/exportar',
+      name: 'billing-reports',
+      component: () => import('@/views/reportes/BillingReportsView.vue'),
+    },
+    {
+      path: '/configuracion/emisor-sri',
+      name: 'sri-emitter-config',
+      component: () => import('@/views/configuracion/SriEmitterConfigView.vue'),
+    },
   ],
 })
 
