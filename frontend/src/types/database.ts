@@ -185,3 +185,120 @@ export interface ElectronicDocument {
 export interface ElectronicDocumentWithPaidBy extends ElectronicDocument {
   paid_by_profile: { full_name: string | null } | null
 }
+
+export type OltDeviceStatus = 'online' | 'offline' | 'unreachable'
+export type OltCardType = 'H901GPSF' | 'H901XGHD' | 'H901CSHF' | 'H901MPSC'
+export type OltPortStatus = 'active' | 'inactive'
+export type OltVlanModo = 'smart' | 'standard'
+export type ServiceProfileTipo = 'VEIP' | 'ETH'
+
+export interface OltDevice {
+  id: string
+  name: string
+  host: string
+  ssh_port: number
+  ssh_user: string
+  ssh_password: string
+  model: string
+  status: OltDeviceStatus
+  firmware_version: string | null
+  last_checked_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface OltCard {
+  id: string
+  olt_id: string
+  slot: number
+  card_type: OltCardType
+  port_count: number
+  status: OltPortStatus
+  synced_at: string
+}
+
+export interface OltPonPort {
+  id: string
+  card_id: string
+  frame: number
+  port: number
+  onu_count: number
+  status: OltPortStatus
+  synced_at: string
+}
+
+export interface OltPonPortWithCard extends OltPonPort {
+  olt_cards: { slot: number; olt_id: string } | null
+}
+
+export interface OltUplinkPort {
+  id: string
+  olt_id: string
+  port: string
+  management_vlan: number | null
+  management_ip: string | null
+  status: OltPortStatus
+  created_at: string
+  updated_at: string
+}
+
+export interface OltVlan {
+  id: string
+  olt_id: string
+  vlan_id: number
+  name: string
+  modo: OltVlanModo
+  created_at: string
+  updated_at: string
+}
+
+export interface SpeedProfile {
+  id: string
+  name: string
+  cir_down_kbps: number
+  pir_down_kbps: number
+  cir_up_kbps: number
+  pir_up_kbps: number
+  created_at: string
+  updated_at: string
+}
+
+export interface LineProfile {
+  id: string
+  name: string
+  tcont: number
+  gem_port_id: number
+  vlan_id: number
+  mapping: string
+  speed_profile_id: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface ServiceProfile {
+  id: string
+  name: string
+  tipo: ServiceProfileTipo
+  puerto_ani: number
+  created_at: string
+  updated_at: string
+}
+
+export interface Tr069Profile {
+  id: string
+  name: string
+  acs_url: string
+  acs_user: string | null
+  acs_password: string | null
+  interval_seconds: number
+  created_at: string
+  updated_at: string
+}
+
+export interface OltBackup {
+  id: string
+  olt_id: string
+  config_text: string
+  created_by: string | null
+  created_at: string
+}

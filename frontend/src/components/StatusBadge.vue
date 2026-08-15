@@ -16,6 +16,10 @@ const STYLES: Record<string, string> = {
   AUTORIZADO: 'bg-teal-100 text-teal-700',
   RECHAZADO: 'bg-red-100 text-red-700',
   ANULADO: 'bg-slate-200 text-slate-500',
+  online: 'bg-teal-100 text-teal-700',
+  offline: 'bg-slate-200 text-slate-500',
+  unreachable: 'bg-red-100 text-red-700',
+  inactive: 'bg-slate-100 text-slate-500',
 }
 
 const LABELS: Record<string, string> = {
@@ -31,6 +35,10 @@ const LABELS: Record<string, string> = {
   AUTORIZADO: 'Autorizado',
   RECHAZADO: 'Rechazado',
   ANULADO: 'Anulado',
+  online: 'En línea',
+  offline: 'Desconectado',
+  unreachable: 'Inalcanzable',
+  inactive: 'Inactivo',
 }
 
 const classes = computed(() => STYLES[props.status] ?? 'bg-slate-100 text-slate-600')

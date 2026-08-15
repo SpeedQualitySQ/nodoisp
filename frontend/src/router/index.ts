@@ -75,6 +75,56 @@ const router = createRouter({
       name: 'sri-emitter-config',
       component: () => import('@/views/configuracion/SriEmitterConfigView.vue'),
     },
+    {
+      path: '/olt',
+      name: 'olt-devices',
+      component: () => import('@/views/olt/OltDevicesView.vue'),
+    },
+    {
+      path: '/olt/cards',
+      name: 'olt-cards',
+      component: () => import('@/views/olt/OltCardsView.vue'),
+    },
+    {
+      path: '/olt/pon-ports',
+      name: 'olt-pon-ports',
+      component: () => import('@/views/olt/OltPonPortsView.vue'),
+    },
+    {
+      path: '/olt/uplink-ports',
+      name: 'olt-uplink-ports',
+      component: () => import('@/views/olt/OltUplinkPortsView.vue'),
+    },
+    {
+      path: '/olt/vlans',
+      name: 'olt-vlans',
+      component: () => import('@/views/olt/OltVlansView.vue'),
+    },
+    {
+      path: '/olt/speed-profiles',
+      name: 'olt-speed-profiles',
+      component: () => import('@/views/olt/OltSpeedProfilesView.vue'),
+    },
+    {
+      path: '/olt/line-profiles',
+      name: 'olt-line-profiles',
+      component: () => import('@/views/olt/OltLineProfilesView.vue'),
+    },
+    {
+      path: '/olt/profiles',
+      name: 'olt-service-profiles',
+      component: () => import('@/views/olt/OltServiceProfilesView.vue'),
+    },
+    {
+      path: '/olt/tr069-profiles',
+      name: 'olt-tr069-profiles',
+      component: () => import('@/views/olt/OltTr069ProfilesView.vue'),
+    },
+    {
+      path: '/olt/backup',
+      name: 'olt-backups',
+      component: () => import('@/views/olt/OltBackupsView.vue'),
+    },
   ],
 })
 
