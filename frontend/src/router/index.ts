@@ -125,6 +125,21 @@ const router = createRouter({
       name: 'olt-backups',
       component: () => import('@/views/olt/OltBackupsView.vue'),
     },
+    {
+      path: '/olt/onu-types',
+      name: 'olt-onu-types',
+      component: () => import('@/views/olt/OltOnuTypesView.vue'),
+    },
+    {
+      path: '/olt/onus',
+      name: 'olt-onus',
+      component: () => import('@/views/olt/OltOnusView.vue'),
+    },
+    {
+      path: '/olt/ip-pools',
+      name: 'olt-ip-pools',
+      component: () => import('@/views/olt/OltIpPoolsView.vue'),
+    },
   ],
 })
 

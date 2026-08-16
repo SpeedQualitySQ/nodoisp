@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { OltCardType, OltDevice } from '@/types/database'
+import type { OltCardType, OltDevice, OltOnu } from '@/types/database'
 
 /**
  * Simula la conexión SSH real al equipo (ssh2 + parseo de `display ...`):
@@ -75,6 +75,51 @@ export async function sincronizarTarjetas(oltId: string) {
 
 export function generarComandoVlan(vlanId: number, nombre: string, modo: string) {
   return `vlan ${vlanId} ${modo}\nvlan desc ${vlanId} description ${nombre}`
+}
+
+export function generarComandoActivarOnu(onu: OltOnu) {
+  const vlan = onu.vlan_id ?? 100
+  return (
+    `interface gpon ${onu.frame}/${onu.slot}\n` +
+    `ont add ${onu.port} ${onu.ont_id} sn-auth ${onu.serial_number} omci ont-lineprofile-id 1 ont-srvprofile-id 1\n` +
+    `ont port native-vlan ${onu.ont_id} eth 1 vlan ${vlan}\n` +
+    `ont ipconfig ${onu.ont_id} dhcp\n` +
+    `commit`
+  )
+}
+
+export function generarComandoEliminarOnu(onu: OltOnu) {
+  return `interface gpon ${onu.frame}/${onu.slot}\nont delete ${onu.port} ${onu.ont_id}\ncommit`
+}
+
+export async function activarOnu(onu: OltOnu) {
+  await new Promise((resolve) => setTimeout(resolve, 900))
+
+  const { error } = await supabase
+    .from('olt_onus')
+    .update({ status: 'active', activated_at: new Date().toISOString() })
+    .eq('id', onu.id)
+  if (error) throw error
+}
+
+/**
+ * Simula `display ont optical-info`: entrega un dBm dentro del rango GPON
+ * documentado en Fase 4 y deriva el estado de enlace a partir de él (>= -29
+ * dBm se considera enlazada, por debajo se reporta sin señal utilizable).
+ */
+export async function consultarSenalOptica(onu: OltOnu) {
+  await new Promise((resolve) => setTimeout(resolve, 700))
+
+  const signalRx = Math.round((-8 - Math.random() * 26) * 10) / 10
+  const status = signalRx >= -29 ? 'online' : 'offline'
+
+  const { error } = await supabase
+    .from('olt_onus')
+    .update({ signal_rx_dbm: signalRx, signal_checked_at: new Date().toISOString(), status })
+    .eq('id', onu.id)
+  if (error) throw error
+
+  return signalRx
 }
 
 export async function ejecutarBackup(device: OltDevice, userId: string | undefined) {

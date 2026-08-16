@@ -302,3 +302,61 @@ export interface OltBackup {
   created_by: string | null
   created_at: string
 }
+
+export type OnuWifiBands = 'none' | '2.4ghz' | '5ghz' | 'dual'
+export type OnuStatus = 'pending' | 'active' | 'online' | 'offline'
+
+export interface OltOnuType {
+  id: string
+  name: string
+  manufacturer: string
+  port_type: ServiceProfileTipo
+  eth_ports: number
+  wifi_bands: OnuWifiBands
+  line_profile_id: string | null
+  service_profile_id: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface OltOnu {
+  id: string
+  olt_id: string
+  frame: number
+  slot: number
+  port: number
+  ont_id: number
+  serial_number: string
+  onu_type_id: string | null
+  line_profile_id: string | null
+  service_profile_id: string | null
+  vlan_id: number | null
+  client_id: string | null
+  contract_id: string | null
+  status: OnuStatus
+  signal_rx_dbm: number | null
+  signal_checked_at: string | null
+  activated_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface OltOnuWithDetails extends OltOnu {
+  olt_onu_types: { name: string } | null
+  clients: { first_name: string; last_name: string } | null
+}
+
+export interface OltIpPool {
+  id: string
+  name: string
+  network: string
+  gateway: string
+  dns_primary: string
+  dns_secondary: string | null
+  range_start: string
+  range_end: string
+  vlan_id: number | null
+  created_at: string
+  updated_at: string
+}

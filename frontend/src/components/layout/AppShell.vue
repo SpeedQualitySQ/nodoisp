@@ -22,6 +22,9 @@ import {
   WrenchScrewdriverIcon,
   CloudIcon,
   ArchiveBoxIcon,
+  RectangleStackIcon,
+  WifiIcon,
+  GlobeAltIcon,
   ArrowRightStartOnRectangleIcon,
 } from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/stores/auth'
@@ -61,11 +64,17 @@ const navOlt = [
   { name: 'olt-backups', label: 'Backups', icon: ArchiveBoxIcon, match: '/olt/backup' },
 ]
 
+const navOnu = [
+  { name: 'olt-onu-types', label: 'Tipos de ONU', icon: RectangleStackIcon, match: '/olt/onu-types' },
+  { name: 'olt-onus', label: 'ONUs', icon: WifiIcon, match: '/olt/onus' },
+  { name: 'olt-ip-pools', label: 'IP Pools', icon: GlobeAltIcon, match: '/olt/ip-pools' },
+]
+
 // Varias rutas de OLT comparten el prefijo /olt (p.ej. "/olt" para el listado
 // de dispositivos y "/olt/vlans" para VLANs); con un simple startsWith ambas
 // quedarían resaltadas a la vez. Se resalta solo el ítem cuyo `match` sea el
 // prefijo más largo que calza con la ruta actual, entre todas las secciones.
-const allNavItems = computed(() => [...nav, ...navFacturacion, ...navConfig, ...navOlt])
+const allNavItems = computed(() => [...nav, ...navFacturacion, ...navConfig, ...navOlt, ...navOnu])
 
 function isActive(item: { name: string; match: string }) {
   const candidates = allNavItems.value.filter((i) => route.path.startsWith(i.match))
@@ -82,7 +91,7 @@ function isActive(item: { name: string; match: string }) {
     <aside class="flex w-60 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div class="px-5 py-5">
         <p class="text-lg font-semibold tracking-tight text-slate-900">NodoISP</p>
-        <p class="text-xs text-slate-500">Fase 1-3 — Clientes, contratos, facturación y OLTs</p>
+        <p class="text-xs text-slate-500">Fase 1-4 — Clientes, contratos, facturación, OLTs y ONUs</p>
       </div>
       <nav class="flex-1 space-y-4 px-3">
         <div class="space-y-1">
@@ -119,6 +128,22 @@ function isActive(item: { name: string; match: string }) {
           <div class="space-y-1">
             <RouterLink
               v-for="item in navOlt"
+              :key="item.name"
+              :to="{ name: item.name }"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+              :class="isActive(item) ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-100'"
+            >
+              <component :is="item.icon" class="h-5 w-5" />
+              {{ item.label }}
+            </RouterLink>
+          </div>
+        </div>
+
+        <div>
+          <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">ONUs</p>
+          <div class="space-y-1">
+            <RouterLink
+              v-for="item in navOnu"
               :key="item.name"
               :to="{ name: item.name }"
               class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
