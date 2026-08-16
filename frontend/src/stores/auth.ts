@@ -12,6 +12,7 @@ export const useAuthStore = defineStore('auth', {
   }),
   getters: {
     isAuthenticated: (state) => !!state.session,
+    isPortalUser: (state) => state.profile?.role === 'cliente_portal',
   },
   actions: {
     async init() {
@@ -37,7 +38,7 @@ export const useAuthStore = defineStore('auth', {
       if (!this.user) return
       const { data } = await supabase
         .from('profiles')
-        .select('id, full_name, email, created_at')
+        .select('id, full_name, email, role, client_id, created_at')
         .eq('id', this.user.id)
         .maybeSingle()
       this.profile = data

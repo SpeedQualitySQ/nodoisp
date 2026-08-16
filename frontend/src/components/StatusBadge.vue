@@ -21,6 +21,17 @@ const STYLES: Record<string, string> = {
   unreachable: 'bg-red-100 text-red-700',
   inactive: 'bg-slate-100 text-slate-500',
   blocked: 'bg-red-100 text-red-700',
+  low: 'bg-slate-100 text-slate-600',
+  medium: 'bg-amber-100 text-amber-700',
+  high: 'bg-orange-100 text-orange-700',
+  urgent: 'bg-red-100 text-red-700',
+  open: 'bg-amber-100 text-amber-700',
+  in_progress: 'bg-teal-100 text-teal-700',
+  waiting_client: 'bg-orange-100 text-orange-700',
+  resolved: 'bg-teal-100 text-teal-700',
+  closed: 'bg-slate-200 text-slate-500',
+  reply: 'bg-teal-100 text-teal-700',
+  internal: 'bg-slate-200 text-slate-500',
 }
 
 const LABELS: Record<string, string> = {
@@ -41,6 +52,17 @@ const LABELS: Record<string, string> = {
   unreachable: 'Inalcanzable',
   inactive: 'Inactivo',
   blocked: 'Bloqueado',
+  low: 'Baja',
+  medium: 'Media',
+  high: 'Alta',
+  urgent: 'Urgente',
+  open: 'Abierto',
+  in_progress: 'En progreso',
+  waiting_client: 'Esperando cliente',
+  resolved: 'Resuelto',
+  closed: 'Cerrado',
+  reply: 'Respuesta',
+  internal: 'Nota interna',
 }
 
 const classes = computed(() => STYLES[props.status] ?? 'bg-slate-100 text-slate-600')

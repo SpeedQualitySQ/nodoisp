@@ -31,6 +31,9 @@ import {
   LockClosedIcon,
   GlobeAsiaAustraliaIcon,
   RssIcon,
+  TicketIcon,
+  IdentificationIcon,
+  ChatBubbleLeftRightIcon,
   ArrowRightStartOnRectangleIcon,
 } from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/stores/auth'
@@ -64,7 +67,13 @@ const navFacturacion = [
 ]
 
 const navConfig = [
-  { name: 'sri-emitter-config', label: 'Emisor SRI', icon: Cog6ToothIcon, match: '/configuracion' },
+  { name: 'sri-emitter-config', label: 'Emisor SRI', icon: Cog6ToothIcon, match: '/configuracion/emisor-sri' },
+  { name: 'whatsapp-config', label: 'WhatsApp', icon: ChatBubbleLeftRightIcon, match: '/configuracion/whatsapp' },
+]
+
+const navSoporte = [
+  { name: 'tickets-list', label: 'Tickets', icon: TicketIcon, match: '/soporte' },
+  { name: 'portal-users', label: 'Usuarios de portal', icon: IdentificationIcon, match: '/soporte/portal-usuarios' },
 ]
 
 const navOlt = [
@@ -108,6 +117,7 @@ const allNavItems = computed(() => [
   ...navOnu,
   ...navMikrotik,
   ...navTr069,
+  ...navSoporte,
 ])
 
 function isActive(item: { name: string; match: string }) {
@@ -125,7 +135,7 @@ function isActive(item: { name: string; match: string }) {
     <aside class="flex w-60 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div class="px-5 py-5">
         <p class="text-lg font-semibold tracking-tight text-slate-900">NodoISP</p>
-        <p class="text-xs text-slate-500">Fase 1-5 — Clientes, contratos, facturación, OLTs, ONUs y MikroTik</p>
+        <p class="text-xs text-slate-500">Fase 1-7 — Clientes, facturación, red, TR-069 y soporte</p>
       </div>
       <nav class="flex-1 space-y-4 px-3">
         <div class="space-y-1">
@@ -210,6 +220,22 @@ function isActive(item: { name: string; match: string }) {
           <div class="space-y-1">
             <RouterLink
               v-for="item in navTr069"
+              :key="item.name"
+              :to="{ name: item.name }"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+              :class="isActive(item) ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-100'"
+            >
+              <component :is="item.icon" class="h-5 w-5" />
+              {{ item.label }}
+            </RouterLink>
+          </div>
+        </div>
+
+        <div>
+          <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Soporte</p>
+          <div class="space-y-1">
+            <RouterLink
+              v-for="item in navSoporte"
               :key="item.name"
               :to="{ name: item.name }"
               class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"

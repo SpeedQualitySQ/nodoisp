@@ -17,10 +17,14 @@ export interface Canton {
   name: string
 }
 
+export type ProfileRole = 'staff' | 'cliente_portal'
+
 export interface Profile {
   id: string
   full_name: string | null
   email: string | null
+  role: ProfileRole
+  client_id: string | null
   created_at: string
 }
 
@@ -457,4 +461,52 @@ export interface GenieAcsDevice {
     _SerialNumber?: string
   }
   [key: string]: unknown
+}
+
+export type TicketType = 'incident' | 'request' | 'billing' | 'complaint' | 'other'
+export type TicketPriority = 'low' | 'medium' | 'high' | 'urgent'
+export type TicketStatus = 'open' | 'in_progress' | 'waiting_client' | 'resolved' | 'closed'
+export type TicketUpdateType = 'reply' | 'internal'
+
+export interface SupportTicket {
+  id: string
+  ticket_number: string
+  client_id: string
+  contract_id: string | null
+  type: TicketType
+  priority: TicketPriority
+  status: TicketStatus
+  title: string
+  description: string | null
+  assigned_to: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface SupportTicketWithClient extends SupportTicket {
+  clients: { first_name: string; last_name: string } | null
+}
+
+export interface TicketUpdateRow {
+  id: string
+  ticket_id: string
+  update_type: TicketUpdateType
+  body: string
+  created_by: string | null
+  created_at: string
+}
+
+export interface WhatsappConfig {
+  id: string
+  enabled: boolean
+  phone_number_id: string | null
+  access_token: string | null
+  technician_phones: string | null
+  check_interval: number
+  notify_venc_enabled: boolean
+  venc_dias_1: number
+  venc_dias_2: number
+  venc_dias_3: number
+  created_at: string
+  updated_at: string
 }

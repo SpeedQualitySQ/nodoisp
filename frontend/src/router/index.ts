@@ -11,6 +11,25 @@ const router = createRouter({
       meta: { public: true },
     },
     {
+      path: '/portal/login',
+      name: 'portal-login',
+      component: () => import('@/views/portal/PortalLoginView.vue'),
+      meta: { public: true },
+    },
+    {
+      path: '/portal/tickets',
+      name: 'portal-tickets',
+      component: () => import('@/views/portal/PortalTicketsView.vue'),
+      meta: { portal: true },
+    },
+    {
+      path: '/portal/tickets/:id',
+      name: 'portal-ticket-detail',
+      component: () => import('@/views/portal/PortalTicketDetailView.vue'),
+      props: true,
+      meta: { portal: true },
+    },
+    {
       path: '/',
       redirect: '/clientes',
     },
@@ -166,6 +185,27 @@ const router = createRouter({
       component: () => import('@/views/mikrotik/MikrotikIpv6PoolsView.vue'),
     },
     {
+      path: '/soporte',
+      name: 'tickets-list',
+      component: () => import('@/views/soporte/TicketsListView.vue'),
+    },
+    {
+      path: '/soporte/portal-usuarios',
+      name: 'portal-users',
+      component: () => import('@/views/soporte/PortalUsersView.vue'),
+    },
+    {
+      path: '/soporte/:id',
+      name: 'ticket-detail',
+      component: () => import('@/views/soporte/TicketDetailView.vue'),
+      props: true,
+    },
+    {
+      path: '/configuracion/whatsapp',
+      name: 'whatsapp-config',
+      component: () => import('@/views/configuracion/WhatsappConfigView.vue'),
+    },
+    {
       path: '/tr069',
       name: 'tr069-devices',
       component: () => import('@/views/tr069/Tr069DevicesView.vue'),
@@ -181,11 +221,25 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const auth = useAuthStore()
+
   if (!to.meta.public && !auth.isAuthenticated) {
-    return { name: 'login', query: { redirect: to.fullPath } }
+    return to.meta.portal
+      ? { name: 'portal-login', query: { redirect: to.fullPath } }
+      : { name: 'login', query: { redirect: to.fullPath } }
   }
   if (to.name === 'login' && auth.isAuthenticated) {
     return { name: 'clients-list' }
+  }
+  if (to.name === 'portal-login' && auth.isAuthenticated) {
+    return { name: 'portal-tickets' }
+  }
+  // Un usuario de portal no puede entrar al sistema principal, y viceversa
+  // — cada uno tiene su propio login y su propio layout (App.vue).
+  if (auth.isAuthenticated && auth.isPortalUser && !to.meta.portal && !to.meta.public) {
+    return { name: 'portal-tickets' }
+  }
+  if (auth.isAuthenticated && !auth.isPortalUser && to.meta.portal) {
+    return { name: 'tickets-list' }
   }
   return true
 })

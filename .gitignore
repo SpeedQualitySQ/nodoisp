@@ -18,3 +18,8 @@ supabase/.temp
 
 # Unrelated files present in this directory before the project started
 /cloudflared-linux-amd64.deb
+
+# Respaldos de la base de datos — contienen datos reales de clientes
+# (nombres, cédulas, teléfonos) y eventualmente el access_token de
+# WhatsApp. Nunca deben subirse al repo.
+/backups/
