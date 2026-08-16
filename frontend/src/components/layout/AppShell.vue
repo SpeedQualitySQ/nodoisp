@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView, useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import {
   UsersIcon,
   Squares2X2Icon,
@@ -30,12 +30,23 @@ import {
   ShieldCheckIcon,
   LockClosedIcon,
   GlobeAsiaAustraliaIcon,
+  RssIcon,
   ArrowRightStartOnRectangleIcon,
 } from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
 const route = useRoute()
+const mainEl = ref<HTMLElement | null>(null)
+
+// <main> es el que scrollea (no la ventana), así que vue-router no lo
+// resetea solo: sin esto, al navegar a otra pantalla el contenido nuevo se
+// dibuja arriba pero el scroll queda donde estaba, y da la sensación de que
+// la pantalla "no cargó" hasta que subís manualmente.
+watch(
+  () => route.fullPath,
+  () => mainEl.value?.scrollTo(0, 0),
+)
 
 const nav = [
   { name: 'clients-list', label: 'Clientes', icon: UsersIcon, match: '/clientes' },
@@ -83,6 +94,8 @@ const navMikrotik = [
   { name: 'mikrotik-ipv6-pool', label: 'Pools IPv6', icon: GlobeAsiaAustraliaIcon, match: '/mikrotik/ipv6-pool' },
 ]
 
+const navTr069 = [{ name: 'tr069-devices', label: 'CPEs', icon: RssIcon, match: '/tr069' }]
+
 // Varias rutas de OLT comparten el prefijo /olt (p.ej. "/olt" para el listado
 // de dispositivos y "/olt/vlans" para VLANs); con un simple startsWith ambas
 // quedarían resaltadas a la vez. Se resalta solo el ítem cuyo `match` sea el
@@ -94,6 +107,7 @@ const allNavItems = computed(() => [
   ...navOlt,
   ...navOnu,
   ...navMikrotik,
+  ...navTr069,
 ])
 
 function isActive(item: { name: string; match: string }) {
@@ -192,6 +206,22 @@ function isActive(item: { name: string; match: string }) {
         </div>
 
         <div>
+          <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">TR-069</p>
+          <div class="space-y-1">
+            <RouterLink
+              v-for="item in navTr069"
+              :key="item.name"
+              :to="{ name: item.name }"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+              :class="isActive(item) ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-100'"
+            >
+              <component :is="item.icon" class="h-5 w-5" />
+              {{ item.label }}
+            </RouterLink>
+          </div>
+        </div>
+
+        <div>
           <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Configuración</p>
           <div class="space-y-1">
             <RouterLink
@@ -220,7 +250,7 @@ function isActive(item: { name: string; match: string }) {
         </button>
       </div>
     </aside>
-    <main class="flex-1 overflow-y-auto">
+    <main ref="mainEl" class="flex-1 overflow-y-auto">
       <RouterView />
     </main>
   </div>

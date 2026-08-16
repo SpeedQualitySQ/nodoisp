@@ -442,3 +442,19 @@ export interface MikrotikIpv6Pool {
   created_at: string
   updated_at: string
 }
+
+// Objeto real devuelto por el API NBI de GenieACS (no una tabla de Supabase):
+// árbol TR-069 anidado que varía según el modelo de CPE, con metadatos
+// prefijados con "_" en la raíz.
+export interface GenieAcsDevice {
+  _id: string
+  _lastInform?: string
+  _registered?: string
+  _deviceId?: {
+    _Manufacturer?: string
+    _OUI?: string
+    _ProductClass?: string
+    _SerialNumber?: string
+  }
+  [key: string]: unknown
+}

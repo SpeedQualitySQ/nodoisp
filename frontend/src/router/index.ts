@@ -165,6 +165,17 @@ const router = createRouter({
       name: 'mikrotik-ipv6-pool',
       component: () => import('@/views/mikrotik/MikrotikIpv6PoolsView.vue'),
     },
+    {
+      path: '/tr069',
+      name: 'tr069-devices',
+      component: () => import('@/views/tr069/Tr069DevicesView.vue'),
+    },
+    {
+      path: '/tr069/:id',
+      name: 'tr069-device-detail',
+      component: () => import('@/views/tr069/Tr069DeviceDetailView.vue'),
+      props: true,
+    },
   ],
 })
 
