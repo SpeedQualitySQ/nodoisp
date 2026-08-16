@@ -93,7 +93,7 @@ async function loadTickets() {
 async function loadLookups() {
   const [{ data: cl }, { data: st }] = await Promise.all([
     supabase.from('clients').select('*').order('last_name'),
-    supabase.from('profiles').select('*').eq('role', 'staff').order('full_name'),
+    supabase.from('profiles').select('*').neq('role', 'cliente_portal').order('full_name'),
   ])
   clients.value = (cl ?? []) as Client[]
   staff.value = (st ?? []) as Profile[]

@@ -32,6 +32,11 @@ const STYLES: Record<string, string> = {
   closed: 'bg-slate-200 text-slate-500',
   reply: 'bg-teal-100 text-teal-700',
   internal: 'bg-slate-200 text-slate-500',
+  admin: 'bg-teal-100 text-teal-700',
+  operador: 'bg-amber-100 text-amber-700',
+  visor: 'bg-slate-100 text-slate-600',
+  in: 'bg-teal-100 text-teal-700',
+  out: 'bg-orange-100 text-orange-700',
 }
 
 const LABELS: Record<string, string> = {
@@ -63,6 +68,11 @@ const LABELS: Record<string, string> = {
   closed: 'Cerrado',
   reply: 'Respuesta',
   internal: 'Nota interna',
+  admin: 'Administrador',
+  operador: 'Operador',
+  visor: 'Visor',
+  in: 'Ingreso',
+  out: 'Egreso',
 }
 
 const classes = computed(() => STYLES[props.status] ?? 'bg-slate-100 text-slate-600')

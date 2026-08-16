@@ -17,7 +17,23 @@ export interface Canton {
   name: string
 }
 
-export type ProfileRole = 'staff' | 'cliente_portal'
+export type ProfileRole = 'admin' | 'operador' | 'visor' | 'cliente_portal'
+
+// Claves de módulo usadas tanto en profiles.permissions (JSONB) como en
+// route.meta.permKey — ver stores/auth.ts (can()) y router/index.ts.
+export type ModuleKey =
+  | 'dashboard'
+  | 'clientes'
+  | 'planes'
+  | 'olt'
+  | 'mikrotik'
+  | 'tr069'
+  | 'facturacion'
+  | 'cobros'
+  | 'soporte'
+  | 'reportes'
+  | 'configuracion'
+  | 'inventario'
 
 export interface Profile {
   id: string
@@ -25,6 +41,7 @@ export interface Profile {
   email: string | null
   role: ProfileRole
   client_id: string | null
+  permissions: Partial<Record<ModuleKey, boolean>>
   created_at: string
 }
 
@@ -143,6 +160,9 @@ export interface SriEmitterConfig {
   secuencial_factura: number
   secuencial_nota_credito: number
   secuencial_nota_debito: number
+  telefono: string | null
+  email: string | null
+  logo_path: string | null
   created_at: string
   updated_at: string
 }
@@ -207,8 +227,19 @@ export interface OltDevice {
   status: OltDeviceStatus
   firmware_version: string | null
   last_checked_at: string | null
+  lat: number | null
+  lng: number | null
   created_at: string
   updated_at: string
+}
+
+export interface Zone {
+  id: string
+  name: string
+  description: string | null
+  lat: number | null
+  lng: number | null
+  created_at: string
 }
 
 export interface OltCard {
@@ -509,4 +540,32 @@ export interface WhatsappConfig {
   venc_dias_3: number
   created_at: string
   updated_at: string
+}
+
+export type InventoryMovementType = 'in' | 'out'
+
+export interface InventoryProduct {
+  id: string
+  code: string
+  name: string
+  category: string | null
+  unit: string
+  min_stock: number
+  cost_price: number
+  created_at: string
+  updated_at: string
+}
+
+export interface InventoryMovement {
+  id: string
+  product_id: string
+  type: InventoryMovementType
+  quantity: number
+  notes: string | null
+  created_by: string | null
+  created_at: string
+}
+
+export interface ProductStock extends InventoryProduct {
+  stock: number
 }

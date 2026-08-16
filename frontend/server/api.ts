@@ -11,6 +11,8 @@ import { createClient } from '@supabase/supabase-js'
  *  - Crear un usuario de portal: requiere el service_role key de Supabase
  *    (auth.admin.*), que rompe toda la seguridad de RLS si llega al
  *    navegador.
+ *  - Crear un usuario de staff (Fase 9, /configuracion/usuarios): mismo
+ *    motivo — auth.admin.inviteUserByEmail() solo existe en el service_role.
  * Se registran como middlewares del servidor de Vite en dev — ver el uso de
  * registerApiMiddlewares() en vite.config.ts.
  */
@@ -93,6 +95,42 @@ export function registerApiMiddlewares(server: ViteDevServer, env: Record<string
       const { error: profileError } = await admin
         .from('profiles')
         .update({ role: 'cliente_portal', client_id })
+        .eq('id', userId)
+      if (profileError) return sendJson(res, 500, { error: profileError.message })
+
+      return sendJson(res, 200, { id: userId, email })
+    } catch (e) {
+      return sendJson(res, 500, { error: e instanceof Error ? e.message : 'Error desconocido' })
+    }
+  })
+
+  server.middlewares.use('/api/staff/create-user', async (req, res) => {
+    if (req.method !== 'POST') return sendJson(res, 405, { error: 'Method not allowed' })
+    if (!supabaseUrl || !serviceRoleKey) {
+      return sendJson(res, 500, { error: 'Faltan VITE_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY en el .env del servidor' })
+    }
+    try {
+      const { email, full_name, role, permissions } = (await readJsonBody(req)) as {
+        email?: string
+        full_name?: string
+        role?: string
+        permissions?: Record<string, boolean>
+      }
+      if (!email || !full_name || !role) return sendJson(res, 400, { error: 'Faltan los campos email/full_name/role' })
+
+      const admin = createClient(supabaseUrl, serviceRoleKey)
+      // Igual que /api/portal/create-user: manda el correo de invitación (el
+      // usuario define su propia contraseña al abrirlo), y el trigger
+      // on_auth_user_created ya crea la fila en profiles con role='operador'
+      // por defecto — acá se corrige con el rol/permisos elegidos en el
+      // formulario.
+      const { data, error } = await admin.auth.admin.inviteUserByEmail(email)
+      if (error) return sendJson(res, 400, { error: error.message })
+
+      const userId = data.user.id
+      const { error: profileError } = await admin
+        .from('profiles')
+        .update({ full_name, role, permissions: permissions ?? {} })
         .eq('id', userId)
       if (profileError) return sendJson(res, 500, { error: profileError.message })
 

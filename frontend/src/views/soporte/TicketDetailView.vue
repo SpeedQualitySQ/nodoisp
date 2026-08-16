@@ -54,7 +54,7 @@ async function loadTicket() {
 }
 
 async function loadStaff() {
-  const { data } = await supabase.from('profiles').select('*').eq('role', 'staff').order('full_name')
+  const { data } = await supabase.from('profiles').select('*').neq('role', 'cliente_portal').order('full_name')
   staff.value = (data ?? []) as Profile[]
 }
 
