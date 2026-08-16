@@ -89,6 +89,24 @@ async function loadLookups() {
   plans.value = (pl ?? []) as Plan[]
 }
 
+function resetForm() {
+  status.value = 'prospect'
+  Object.assign(client, {
+    first_name: '',
+    last_name: '',
+    identification: '',
+    email: '',
+    mobile: '',
+    phone: '',
+    province_id: null,
+    canton_id: null,
+  })
+  Object.assign(address, { id: null, address_line: '', reference: '', lat: null, lng: null })
+  cantons.value = []
+  contract.value = null
+  Object.assign(newContract, { plan_id: '', monthly_fee: null, billing_day: 1, installation_date: '' })
+}
+
 async function loadClient() {
   if (!props.id) return
   const [{ data: c, error: cErr }, { data: addr }, { data: contracts }] = await Promise.all([
@@ -120,6 +138,21 @@ onMounted(async () => {
   await Promise.all([loadLookups(), loadClient()])
   loading.value = false
 })
+
+// Vue Router reutiliza esta misma instancia al navegar entre /clientes/nuevo
+// y /clientes/:id, o entre dos clientes distintos (misma ruta con distinto
+// param) — sin este watch, onMounted no vuelve a dispararse y el formulario
+// se queda mostrando los datos del cliente anterior.
+watch(
+  () => props.id,
+  async () => {
+    loading.value = true
+    errorMsg.value = ''
+    resetForm()
+    await loadClient()
+    loading.value = false
+  },
+)
 
 async function onSave() {
   errorMsg.value = ''
