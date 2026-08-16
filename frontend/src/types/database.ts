@@ -360,3 +360,85 @@ export interface OltIpPool {
   created_at: string
   updated_at: string
 }
+
+export type MikrotikDeviceStatus = 'online' | 'offline' | 'unreachable'
+export type FirewallTableName = 'filter' | 'nat'
+export type FirewallAction = 'accept' | 'drop' | 'reject' | 'masquerade' | 'log'
+export type MikrotikBlockStatus = 'active' | 'blocked'
+
+export interface MikrotikDevice {
+  id: string
+  name: string
+  host: string
+  api_port: number
+  api_ssl: boolean
+  api_user: string
+  api_password: string
+  model: string
+  status: MikrotikDeviceStatus
+  firmware_version: string | null
+  last_checked_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface MikrotikIpPool {
+  id: string
+  mikrotik_id: string
+  name: string
+  ranges: string
+  ppp_profile_name: string | null
+  local_address: string | null
+  dns_primary: string
+  dns_secondary: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface MikrotikFirewallRule {
+  id: string
+  mikrotik_id: string
+  table_name: FirewallTableName
+  chain: string
+  action: FirewallAction
+  src_address: string | null
+  dst_address: string | null
+  protocol: string | null
+  dst_port: string | null
+  src_address_list: string | null
+  out_interface: string | null
+  comment: string | null
+  position: number
+  enabled: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface MikrotikClientBlock {
+  id: string
+  mikrotik_id: string
+  client_id: string
+  ip_address: string | null
+  pppoe_username: string | null
+  reason: string | null
+  status: MikrotikBlockStatus
+  blocked_at: string | null
+  unblocked_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface MikrotikClientBlockWithClient extends MikrotikClientBlock {
+  clients: { first_name: string; last_name: string; identification: string } | null
+}
+
+export interface MikrotikIpv6Pool {
+  id: string
+  mikrotik_id: string
+  name: string
+  prefix: string
+  prefix_length: number
+  interface_name: string | null
+  created_at: string
+  updated_at: string
+}

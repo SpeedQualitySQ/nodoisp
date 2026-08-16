@@ -140,6 +140,31 @@ const router = createRouter({
       name: 'olt-ip-pools',
       component: () => import('@/views/olt/OltIpPoolsView.vue'),
     },
+    {
+      path: '/mikrotik',
+      name: 'mikrotik-devices',
+      component: () => import('@/views/mikrotik/MikrotikDevicesView.vue'),
+    },
+    {
+      path: '/mikrotik/ip-address',
+      name: 'mikrotik-ip-address',
+      component: () => import('@/views/mikrotik/MikrotikIpPoolsView.vue'),
+    },
+    {
+      path: '/mikrotik/firewall',
+      name: 'mikrotik-firewall',
+      component: () => import('@/views/mikrotik/MikrotikFirewallView.vue'),
+    },
+    {
+      path: '/mikrotik/bloqueos',
+      name: 'mikrotik-blocks',
+      component: () => import('@/views/mikrotik/MikrotikBlocksView.vue'),
+    },
+    {
+      path: '/mikrotik/ipv6-pool',
+      name: 'mikrotik-ipv6-pool',
+      component: () => import('@/views/mikrotik/MikrotikIpv6PoolsView.vue'),
+    },
   ],
 })
 

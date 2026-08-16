@@ -25,6 +25,11 @@ import {
   RectangleStackIcon,
   WifiIcon,
   GlobeAltIcon,
+  CpuChipIcon,
+  CircleStackIcon,
+  ShieldCheckIcon,
+  LockClosedIcon,
+  GlobeAsiaAustraliaIcon,
   ArrowRightStartOnRectangleIcon,
 } from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/stores/auth'
@@ -70,11 +75,26 @@ const navOnu = [
   { name: 'olt-ip-pools', label: 'IP Pools', icon: GlobeAltIcon, match: '/olt/ip-pools' },
 ]
 
+const navMikrotik = [
+  { name: 'mikrotik-devices', label: 'MikroTik', icon: CpuChipIcon, match: '/mikrotik' },
+  { name: 'mikrotik-ip-address', label: 'IP Address', icon: CircleStackIcon, match: '/mikrotik/ip-address' },
+  { name: 'mikrotik-firewall', label: 'Firewall', icon: ShieldCheckIcon, match: '/mikrotik/firewall' },
+  { name: 'mikrotik-blocks', label: 'Bloqueos', icon: LockClosedIcon, match: '/mikrotik/bloqueos' },
+  { name: 'mikrotik-ipv6-pool', label: 'Pools IPv6', icon: GlobeAsiaAustraliaIcon, match: '/mikrotik/ipv6-pool' },
+]
+
 // Varias rutas de OLT comparten el prefijo /olt (p.ej. "/olt" para el listado
 // de dispositivos y "/olt/vlans" para VLANs); con un simple startsWith ambas
 // quedarían resaltadas a la vez. Se resalta solo el ítem cuyo `match` sea el
 // prefijo más largo que calza con la ruta actual, entre todas las secciones.
-const allNavItems = computed(() => [...nav, ...navFacturacion, ...navConfig, ...navOlt, ...navOnu])
+const allNavItems = computed(() => [
+  ...nav,
+  ...navFacturacion,
+  ...navConfig,
+  ...navOlt,
+  ...navOnu,
+  ...navMikrotik,
+])
 
 function isActive(item: { name: string; match: string }) {
   const candidates = allNavItems.value.filter((i) => route.path.startsWith(i.match))
@@ -91,7 +111,7 @@ function isActive(item: { name: string; match: string }) {
     <aside class="flex w-60 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div class="px-5 py-5">
         <p class="text-lg font-semibold tracking-tight text-slate-900">NodoISP</p>
-        <p class="text-xs text-slate-500">Fase 1-4 — Clientes, contratos, facturación, OLTs y ONUs</p>
+        <p class="text-xs text-slate-500">Fase 1-5 — Clientes, contratos, facturación, OLTs, ONUs y MikroTik</p>
       </div>
       <nav class="flex-1 space-y-4 px-3">
         <div class="space-y-1">
@@ -144,6 +164,22 @@ function isActive(item: { name: string; match: string }) {
           <div class="space-y-1">
             <RouterLink
               v-for="item in navOnu"
+              :key="item.name"
+              :to="{ name: item.name }"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+              :class="isActive(item) ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-100'"
+            >
+              <component :is="item.icon" class="h-5 w-5" />
+              {{ item.label }}
+            </RouterLink>
+          </div>
+        </div>
+
+        <div>
+          <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">MikroTik</p>
+          <div class="space-y-1">
+            <RouterLink
+              v-for="item in navMikrotik"
               :key="item.name"
               :to="{ name: item.name }"
               class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"

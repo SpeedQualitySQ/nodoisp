@@ -20,6 +20,7 @@ const STYLES: Record<string, string> = {
   offline: 'bg-slate-200 text-slate-500',
   unreachable: 'bg-red-100 text-red-700',
   inactive: 'bg-slate-100 text-slate-500',
+  blocked: 'bg-red-100 text-red-700',
 }
 
 const LABELS: Record<string, string> = {
@@ -39,6 +40,7 @@ const LABELS: Record<string, string> = {
   offline: 'Desconectado',
   unreachable: 'Inalcanzable',
   inactive: 'Inactivo',
+  blocked: 'Bloqueado',
 }
 
 const classes = computed(() => STYLES[props.status] ?? 'bg-slate-100 text-slate-600')
